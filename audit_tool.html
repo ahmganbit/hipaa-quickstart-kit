@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free HIPAA Audit Tool - HIPAA Compliance Quick-Start Kit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth; /* Enables smooth scrolling for anchor links */
+        }
+        body {
+            font-family: 'Lato', sans-serif; /* Updated font */
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+        header {
+            background: #0056b3;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            border-bottom: #004085 3px solid;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        nav {
+            background: #343a40;
+            color: #fff;
+            padding: 0.5rem 0;
+            text-align: center;
+            position: sticky; /* Make nav sticky */
+            top: 0;
+            z-index: 1000;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: inline-block;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        nav a:hover {
+            background: #0056b3;
+            color: #e0e0e0;
+            border-radius: 5px;
+            text-decoration: underline;
+        }
+        .main-content {
+            padding: 2rem 0;
+            margin-top: 0; /* Adjust if nav is sticky */
+        }
+        footer {
+            background: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        /* Styles from hipaa_interactive_checklist.html for the checklist itself */
+        .checklist-container-wrapper {
+            max-width: 900px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .checklist-container-wrapper h1, .checklist-container-wrapper h2, .checklist-container-wrapper h3 {
+            color: #0056b3;
+            font-weight: 700; /* Ensure headings use bold Lato */
+        }
+        .checklist-container-wrapper h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        .disclaimer {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        .section {
+            margin-bottom: 30px;
+            border-left: 3px solid #0056b3;
+            padding-left: 15px;
+        }
+        .section h2 {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.5rem;
+        }
+        .section h2 .toggle-icon::before {
+            content: '\25BC'; /* Down arrow */
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .section.collapsed h2 .toggle-icon::before {
+            content: '\25B6'; /* Right arrow */
+        }
+        .subsection {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .subsection h3 {
+            font-size: 1.2rem;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+        }
+        li input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .reference {
+            font-size: 0.8em;
+            color: #555;
+            display: block;
+            margin-top: 4px;
+        }
+        .progress-container {
+            margin-bottom: 20px;
+            background-color: #e9ecef;
+            border-radius: .25rem;
+            padding: 5px;
+        }
+        .progress-bar {
+            height: 24px;
+            background-color: #28a745;
+            width: 0%;
+            text-align: center;
+            line-height: 24px;
+            color: white;
+            border-radius: .25rem;
+            transition: width 0.4s ease;
+        }
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .controls button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 700; /* Ensure button text is bold */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .controls button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .section-content {
+            max-height: 10000px; 
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .section.collapsed .section-content {
+            max-height: 0;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 2rem;
+            background-color: #e9ecef;
+            margin-top: 2rem;
+            border-radius: 8px;
+        }
+        .cta-section h3 {
+            color: #0056b3;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #28a745; 
+            color: #fff;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            margin: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .cta-button:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        #scrollToTopBtn {
+            display: none; 
+            position: fixed; 
+            bottom: 20px; 
+            right: 30px; 
+            z-index: 99; 
+            border: none; 
+            outline: none; 
+            background-color: #0056b3; 
+            color: white; 
+            cursor: pointer; 
+            padding: 12px 15px;
+            border-radius: 50%; 
+            font-size: 18px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+        }
+        #scrollToTopBtn:hover {
+            background-color: #004085;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background-color: #fff;
+                font-family: 'Lato', sans-serif; /* Ensure print uses Lato */
+            }
+            header, nav, footer, .controls, .progress-container, .toggle-icon, .cta-section, #scrollToTopBtn {
+                display: none !important;
+            }
+            .checklist-container-wrapper {
+                box-shadow: none;
+                max-width: 100%;
+                border-radius: 0;
+                margin: 0;
+                padding: 0;
+            }
+            .section {
+                border-left: none;
+                padding-left: 0;
+            }
+            .section.collapsed .section-content, .section-content {
+                max-height: none !important; 
+                overflow: visible !important;
+            }
+            li {
+                page-break-inside: avoid;
+            }
+        }
+         @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .checklist-container-wrapper h1 {
+                font-size: 1.6rem;
+            }
+            #scrollToTopBtn {
+                padding: 10px 12px;
+                font-size: 16px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>HIPAA Compliance Quick-Start Kit</h1>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="index.html">Home</a>
+            <a href="audit_tool.html">Free Audit Tool</a>
+            <a href="services.html">Services</a>
+            <a href="how_it_works.html">How It Works</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="checklist-container-wrapper">
+                <h1>Free Interactive HIPAA Compliance Audit Checklist</h1>
+
+                <div class="disclaimer">
+                    <p><strong>Disclaimer:</strong> This checklist is intended for informational and self-assessment purposes only. It is not a substitute for legal advice or a comprehensive HIPAA audit conducted by qualified professionals. Organizations should consult with legal counsel and compliance experts to ensure full adherence to HIPAA regulations.</p>
+                </div>
+
+                <div class="controls">
+                    <button id="resetButton">Reset Checklist</button>
+                    <button id="printButton">Print Checklist</button>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar">0%</div>
+                </div>
+
+                <div id="checklistContainer">
+                    <!-- Checklist sections will be injected here by JavaScript -->
+                </div>
+
+                <div class="cta-section">
+                    <h3>Completed the Checklist? Identified Areas for Improvement?</h3>
+                    <p>Our <strong>HIPAA Compliance Fix Service</strong> can help you address these gaps effectively.</p>
+                    <a href="services.html#payment" class="cta-button">Learn More & Get Expert Help</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> YourCompanyName/YourName. All Rights Reserved.</p>
+            <p><a href="privacy_policy.html" style="color: #fff; text-decoration: underline;">Privacy Policy (Placeholder)</a></p>
+        </div>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">&#8679;</button>
+
+    <script>
+        // Original checklist script will be here (ensure it's complete in the actual file)
+        // For brevity, I am not re-pasting the entire long checklistData string and its processing logic.
+        // Assume the original script that populates #checklistContainer and handles its functionality is present.
+        // The following is ADDED JavaScript for scroll-to-top and footer year.
+
+        // --- BEGINNING OF PREVIOUSLY TRUNCATED CHECKLIST SCRIPT (Placeholder) ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const checklistData = `
+## Section 1: Security Rule - Administrative Safeguards
+
+### 1.1 Security Management Process
+- **1.1.1 Risk Analysis:** Has a thorough and accurate risk analysis of potential risks and vulnerabilities to the confidentiality, integrity, and availability of electronic Protected Health Information (ePHI) been conducted and documented? (45 CFR § 164.308(a)(1)(ii)(A))
+- **1.1.2 Risk Management:** Are security measures implemented sufficient to reduce risks and vulnerabilities to a reasonable and appropriate level? (45 CFR § 164.308(a)(1)(ii)(B))
+- **1.1.3 Sanction Policy:** Is there a sanction policy in place for workforce members who fail to comply with security policies and procedures? (45 CFR § 164.308(a)(1)(ii)(C))
+- **1.1.4 Information System Activity Review:** Are procedures in place to regularly review records of information system activity, such as audit logs, access reports, and security incident tracking reports? (45 CFR § 164.308(a)(1)(ii)(D))
+
+### 1.2 Assigned Security Responsibility
+- **1.2.1 Identify Security Official:** Has a security official been identified who is responsible for the development and implementation of policies and procedures required by the Security Rule? (45 CFR § 164.308(a)(2))
+
+### 1.3 Workforce Security
+- **1.3.1 Authorization and/or Supervision:** Are policies and procedures implemented to ensure that all members of the workforce have appropriate access to ePHI and to prevent those workforce members who do not have access from obtaining access? (45 CFR § 164.308(a)(3)(ii)(A))
+- **1.3.2 Workforce Clearance Procedure:** Are procedures in place to determine that the access of a workforce member to ePHI is appropriate? (45 CFR § 164.308(a)(3)(ii)(B))
+- **1.3.3 Termination Procedures:** Are procedures for terminating access to ePHI when a workforce member leaves, or their responsibilities change, implemented and documented? (45 CFR § 164.308(a)(3)(ii)(C))
+
+### 1.4 Information Access Management
+- **1.4.1 Isolating Healthcare Clearinghouse Functions (if applicable):** If a healthcare clearinghouse is part of a larger organization, are policies and procedures in place to protect the ePHI of the clearinghouse from the larger organization? (45 CFR § 164.308(a)(4)(ii)(A))
+- **1.4.2 Access Authorization:** Are policies and procedures for granting access to ePHI (e.g., through access to a workstation, transaction, program, process, or other mechanism) implemented? (45 CFR § 164.308(a)(4)(ii)(B))
+- **1.4.3 Access Establishment and Modification:** Are policies and procedures that, based upon the entity’s access authorization policies, establish, document, review, and modify a user’s right of access to a workstation, terminal, or transaction implemented? (45 CFR § 164.308(a)(4)(ii)(C))
+
+### 1.5 Security Awareness and Training
+- **1.5.1 Security Reminders:** Are periodic security updates or reminders provided to the workforce? (45 CFR § 164.308(a)(5)(ii)(A))
+- **1.5.2 Protection from Malicious Software:** Are procedures for guarding against, detecting, and reporting malicious software implemented? (45 CFR § 164.308(a)(5)(ii)(B))
+- **1.5.3 Log-in Monitoring:** Are procedures for monitoring log-in attempts and reporting discrepancies implemented? (45 CFR § 164.308(a)(5)(ii)(C))
+- **1.5.4 Password Management:** Are procedures for creating, changing, and safeguarding passwords implemented? (45 CFR § 164.308(a)(5)(ii)(D))
+
+### 1.6 Security Incident Procedures
+- **1.6.1 Response and Reporting:** Are policies and procedures to address security incidents, including identifying and responding to suspected or known security incidents, mitigating harmful effects, and documenting incidents and their outcomes, implemented? (45 CFR § 164.308(a)(6)(i))
+
+### 1.7 Contingency Plan
+- **1.7.1 Data Backup Plan:** Are procedures to create and maintain retrievable exact copies of ePHI established and implemented? (45 CFR § 164.308(a)(7)(ii)(A))
+- **1.7.2 Disaster Recovery Plan:** Are procedures to restore any loss of data established and implemented? (45 CFR § 164.308(a)(7)(ii)(B))
+- **1.7.3 Emergency Mode Operation Plan:** Are procedures to enable continuation of critical business processes for protection of the security of ePHI while operating in emergency mode established and implemented? (45 CFR § 164.308(a)(7)(ii)(C))
+- **1.7.4 Testing and Revision Procedures:** Are procedures for periodic testing and revision of contingency plans implemented? (45 CFR § 164.308(a)(7)(ii)(D))
+- **1.7.5 Applications and Data Criticality Analysis:** Is an assessment of the relative criticality of specific applications and data in support of other contingency plan components conducted? (45 CFR § 164.308(a)(7)(ii)(E))
+
+### 1.8 Evaluation
+- **1.8.1 Periodic Evaluation:** Are periodic technical and nontechnical evaluations, based upon the standards implemented under this rule and in response to environmental or operational changes affecting the security of ePHI, performed? (45 CFR § 164.308(a)(8))
+
+### 1.9 Business Associate Contracts and Other Arrangements
+- **1.9.1 Written Contract or Other Arrangement:** Is there a written contract or other arrangement with business associates that access, use, or disclose ePHI, which meets the requirements of 45 CFR § 164.314(a)? (45 CFR § 164.308(b)(1))
+
+## Section 2: Security Rule - Physical Safeguards
+
+### 2.1 Facility Access Controls
+- **2.1.1 Contingency Operations:** Are procedures that allow facility access in support of restoration of lost data under the disaster recovery plan and emergency mode operations plan in the event of an emergency established and implemented? (45 CFR § 164.310(a)(2)(i))
+- **2.1.2 Facility Security Plan:** Are policies and procedures to safeguard the facility and the equipment therein from unauthorized physical access, tampering, and theft implemented? (45 CFR § 164.310(a)(2)(ii))
+- **2.1.3 Access Control and Validation Procedures:** Are procedures to control and validate a person’s access to facilities based on their role or function, including visitor control, and control of access to software programs for testing and revision, implemented? (45 CFR § 164.310(a)(2)(iii))
+- **2.1.4 Maintenance Records:** Are policies and procedures to document repairs and modifications to the physical components of a facility which are related to security (e.g. hardware, walls, doors, and locks) implemented? (45 CFR § 164.310(a)(2)(iv))
+
+### 2.2 Workstation Use
+- **2.2.1 Policies and Procedures for Workstation Use:** Are policies and procedures that specify the proper functions to be performed, the manner in which those functions are to be performed, and the physical attributes of the surroundings of a specific workstation or class of workstation that can access ePHI implemented? (45 CFR § 164.310(b))
+
+### 2.3 Workstation Security
+- **2.3.1 Physical Safeguards for Workstations:** Are physical safeguards for all workstations that access ePHI implemented to restrict access to authorized users? (45 CFR § 164.310(c))
+
+### 2.4 Device and Media Controls
+- **2.4.1 Disposal:** Are policies and procedures to address the final disposition of ePHI, and/or the hardware or electronic media on which it is stored, implemented? (45 CFR § 164.310(d)(2)(i))
+- **2.4.2 Media Re-use:** Are procedures for removal of ePHI from electronic media before the media are made available for re-use implemented? (45 CFR § 164.310(d)(2)(ii))
+- **2.4.3 Accountability:** Are records of the movements of hardware and electronic media and any person responsible therefore maintained? (45 CFR § 164.310(d)(2)(iii))
+- **2.4.4 Data Backup and Storage:** Is a retrievable, exact copy of ePHI created, when needed, before movement of equipment? (45 CFR § 164.310(d)(2)(iv))
+
+## Section 3: Security Rule - Technical Safeguards
+
+### 3.1 Access Control
+- **3.1.1 Unique User Identification:** Is a unique name or number for identifying and tracking user identity assigned to each user? (45 CFR § 164.312(a)(2)(i))
+- **3.1.2 Emergency Access Procedure:** Are established procedures for obtaining necessary ePHI during an emergency implemented? (45 CFR § 164.312(a)(2)(ii))
+- **3.1.3 Automatic Logoff:** Are electronic procedures that terminate an electronic session after a predetermined time of inactivity implemented? (45 CFR § 164.312(a)(2)(iii))
+- **3.1.4 Encryption and Decryption:** Is a mechanism to encrypt and decrypt ePHI implemented where deemed appropriate? (45 CFR § 164.312(a)(2)(iv))
+
+### 3.2 Audit Controls
+- **3.2.1 Audit Trails:** Are hardware, software, and/or procedural mechanisms that record and examine activity in information systems that contain or use ePHI implemented? (45 CFR § 164.312(b))
+
+### 3.3 Integrity
+- **3.3.1 Mechanism to Authenticate ePHI:** Are policies and procedures to protect ePHI from improper alteration or destruction implemented? (45 CFR § 164.312(c)(1))
+- **3.3.2 Data Integrity:** Are electronic mechanisms to corroborate that ePHI has not been altered or destroyed in an unauthorized manner implemented? (45 CFR § 164.312(c)(2))
+
+### 3.4 Person or Entity Authentication
+- **3.4.1 Authentication:** Are procedures to verify that a person or entity seeking access to ePHI is the one claimed implemented? (45 CFR § 164.312(d))
+
+### 3.5 Transmission Security
+- **3.5.1 Integrity Controls:** Are security measures to ensure that electronically transmitted ePHI is not improperly modified without detection until disposed of implemented? (45 CFR § 164.312(e)(2)(i))
+- **3.5.2 Encryption:** Is a mechanism to encrypt ePHI whenever deemed appropriate during transmission implemented? (45 CFR § 164.312(e)(2)(ii))
+
+## Section 4: Privacy Rule - Key Considerations (Simplified)
+
+### 4.1 Minimum Necessary
+- **4.1.1 Policies for Minimum Necessary Use/Disclosure:** Are policies and procedures that limit the PHI used, disclosed, or requested to the minimum necessary to accomplish the intended purpose in place? (45 CFR § 164.502(b), 45 CFR § 164.514(d))
+
+### 4.2 Notice of Privacy Practices (NPP)
+- **4.2.1 Provide NPP:** Is a Notice of Privacy Practices provided to individuals as required, and is it posted in a clear and prominent location and on the website if one is maintained? (45 CFR § 164.520)
+
+### 4.3 Individual Rights
+- **4.3.1 Access to PHI:** Are policies and procedures in place to allow individuals to inspect and obtain a copy of their PHI? (45 CFR § 164.524)
+- **4.3.2 Amendment of PHI:** Are policies and procedures in place to allow individuals to request amendment of their PHI? (45 CFR § 164.526)
+- **4.3.3 Accounting of Disclosures:** Are policies and procedures in place to provide individuals with an accounting of disclosures of their PHI? (45 CFR § 164.528)
+
+### 4.4 Uses and Disclosures of PHI
+- **4.4.1 Consent/Authorization:** Are appropriate consents or authorizations obtained for uses and disclosures of PHI not otherwise permitted or required by the Privacy Rule? (45 CFR § 164.506, 45 CFR § 164.508)
+- **4.4.2 Verification of Identity:** Are policies and procedures to verify the identity and authority of individuals requesting PHI in place? (45 CFR § 164.514(h))
+
+### 4.5 Safeguards for PHI
+- **4.5.1 Administrative, Technical, and Physical Safeguards:** Are appropriate administrative, technical, and physical safeguards in place to protect the privacy of PHI from any intentional or unintentional use or disclosure that is in violation of the Privacy Rule? (45 CFR § 164.530(c))
+
+## Section 5: Breach Notification Rule
+
+### 5.1 Discovery and Notification
+- **5.1.1 Breach Discovery Procedures:** Are procedures in place to identify and document potential breaches of unsecured PHI? (45 CFR § 164.404)
+- **5.1.2 Notification to Individuals:** In the case of a breach of unsecured PHI, are individuals notified without unreasonable delay and in no case later than 60 calendar days after discovery of a breach? (45 CFR § 164.404)
+- **5.1.3 Notification to Media (if applicable):** If a breach affects more than 500 residents of a State or jurisdiction, is the media notified as required? (45 CFR § 164.406)
+- **5.1.4 Notification to the Secretary of HHS:** Is the Secretary of HHS notified of breaches of unsecured PHI as required? (45 CFR § 164.408)
+
+### 5.2 Documentation
+- **5.2.1 Breach Documentation:** Is all information related to breaches, including the risk assessment and notifications made, documented and maintained? (45 CFR § 164.404, 45 CFR § 164.530(j))
+`;
+
+            const checklistContainer = document.getElementById('checklistContainer');
+            const progressBar = document.getElementById('progressBar');
+            const resetButton = document.getElementById('resetButton');
+            const printButton = document.getElementById('printButton');
+            let totalCheckboxes = 0;
+            let checkedCheckboxes = 0;
+
+            function parseMarkdown(markdown) {
+                const lines = markdown.split('\n');
+                let currentSection = null;
+                let currentSubSection = null;
+
+                lines.forEach(line => {
+                    if (line.startsWith('## Section')) {
+                        const title = line.substring(line.indexOf(':') + 1).trim();
+                        currentSection = createSection(title);
+                        checklistContainer.appendChild(currentSection.element);
+                        currentSubSection = null; 
+                    } else if (line.startsWith('### ')) {
+                        if (currentSection) {
+                            const title = line.substring(line.indexOf(' ') + 1).trim();
+                            currentSubSection = createSubSection(title);
+                            currentSection.content.appendChild(currentSubSection.element);
+                        }
+                    } else if (line.startsWith('- **')) {
+                        if (currentSubSection || currentSection) {
+                            const itemText = line.substring(line.indexOf('**') + 2, line.lastIndexOf('**'));
+                            const referenceMatch = line.match(/\(([^)]+)\)/);
+                            const reference = referenceMatch ? referenceMatch[1] : '';
+                            const listItem = createChecklistItem(itemText, reference);
+                            
+                            if (currentSubSection) {
+                                currentSubSection.list.appendChild(listItem);
+                            } else if (currentSection) { // Item directly under section
+                                if (!currentSection.list) { // Create a default list if not exists
+                                    currentSection.list = document.createElement('ul');
+                                    currentSection.content.appendChild(currentSection.list);
+                                }
+                                currentSection.list.appendChild(listItem);
+                            }
+                        }
+                    }
+                });
+                updateProgressBar();
+            }
+
+            function createSection(title) {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section collapsed'; // Start collapsed
+                const sectionTitle = document.createElement('h2');
+                sectionTitle.innerHTML = title + 
+                sectionTitle.onclick = function() {
+                    sectionDiv.classList.toggle('collapsed');
+                };
+                
+                const sectionContent = document.createElement('div');
+                sectionContent.className = 'section-content';
+
+                sectionDiv.appendChild(sectionTitle);
+                sectionDiv.appendChild(sectionContent);
+                return { element: sectionDiv, content: sectionContent, list: null }; 
+            }
+
+            function createSubSection(title) {
+                const subSectionDiv = document.createElement('div');
+                subSectionDiv.className = 'subsection';
+                const subSectionTitle = document.createElement('h3');
+                subSectionTitle.textContent = title;
+                const ul = document.createElement('ul');
+                subSectionDiv.appendChild(subSectionTitle);
+                subSectionDiv.appendChild(ul);
+                return { element: subSectionDiv, list: ul };
+            }
+
+            function createChecklistItem(text, reference) {
+                totalCheckboxes++;
+                const li = document.createElement('li');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = 'item' + totalCheckboxes;
+                checkbox.onchange = updateProgressBar;
+                
+                const label = document.createElement('label');
+                label.htmlFor = 'item' + totalCheckboxes;
+                label.textContent = text;
+                
+                li.appendChild(checkbox);
+                li.appendChild(label);
+                
+                if (reference) {
+                    const refSpan = document.createElement('span');
+                    refSpan.className = 'reference';
+                    refSpan.textContent = '(' + reference + ')';
+                    li.appendChild(refSpan);
+                }
+                return li;
+            }
+
+            function updateProgressBar() {
+                const checkboxes = checklistContainer.querySelectorAll('input[type="checkbox"]');
+                checkedCheckboxes = 0;
+                checkboxes.forEach(cb => {
+                    if (cb.checked) checkedCheckboxes++;
+                });
+                const percentage = totalCheckboxes > 0 ? (checkedCheckboxes / totalCheckboxes) * 100 : 0;
+                progressBar.style.width = percentage + '%';
+                progressBar.textContent = Math.round(percentage) + '%';
+            }
+
+            resetButton.onclick = function() {
+                const checkboxes = checklistContainer.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = false);
+                updateProgressBar();
+            };
+
+            printButton.onclick = function() {
+                window.print();
+            };
+
+            parseMarkdown(checklistData);
+        });
+        // --- END OF PREVIOUSLY TRUNCATED CHECKLIST SCRIPT (Placeholder) ---
+
+        // Get the button for scroll to top
+        let scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+        // When the user scrolls down 200px from the top of the document, show the button
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                if(scrollToTopBtn) scrollToTopBtn.style.display = "block";
+            } else {
+                if(scrollToTopBtn) scrollToTopBtn.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function scrollToTop() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+        
+        // Update year in footer
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Smooth scroll for anchor links (basic implementation for this page, if any)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.pathname === window.location.pathname) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
+

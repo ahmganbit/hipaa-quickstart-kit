@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIPAA Compliance Audit Report Template - Quick-Start Kit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Lato', sans-serif; /* Updated font */
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+        header {
+            background: #0056b3;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            border-bottom: #004085 3px solid;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        nav {
+            background: #343a40;
+            color: #fff;
+            padding: 0.5rem 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: inline-block;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        nav a:hover {
+            background: #0056b3;
+            color: #e0e0e0;
+            border-radius: 5px;
+            text-decoration: underline;
+        }
+        .main-content {
+            padding: 2rem 0;
+            margin-top: 0;
+        }
+        .report-container {
+            background: #fff;
+            padding: 30px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            max-width: 800px; /* A4-like width */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .report-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        .report-header h2 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .report-header p {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .report-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .report-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .report-section h3 {
+            color: #007bff;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 5px;
+            font-weight: 700;
+        }
+        .client-info p, .report-content p, .report-content ul li {
+            margin-bottom: 8px;
+        }
+        .client-info strong, .report-content strong {
+            color: #343a40;
+        }
+        textarea {
+            width: 98%;
+            min-height: 80px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-family: 'Lato', sans-serif; /* Updated font */
+            font-size: 0.95rem;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        textarea:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+            outline: none;
+        }
+        .status-options {
+            margin-bottom:10px;
+        }
+        .status-options label {
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .action-plan ol {
+            padding-left: 20px;
+        }
+        .action-plan li {
+            margin-bottom: 8px;
+        }
+        .disclaimer-footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #777;
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .print-button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .print-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            font-weight: 700;
+        }
+        .print-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        footer {
+            background: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        #scrollToTopBtn {
+            display: none; 
+            position: fixed; 
+            bottom: 20px; 
+            right: 30px; 
+            z-index: 99; 
+            border: none; 
+            outline: none; 
+            background-color: #0056b3; 
+            color: white; 
+            cursor: pointer; 
+            padding: 12px 15px;
+            border-radius: 50%; 
+            font-size: 18px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+        }
+        #scrollToTopBtn:hover {
+            background-color: #004085;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+                margin: 0;
+                font-size: 10pt; /* Adjust for print */
+                font-family: 'Lato', sans-serif;
+            }
+            header, nav, footer, .print-button-container, .guidance-text, #scrollToTopBtn {
+                display: none !important;
+            }
+            .main-content {
+                padding: 0;
+            }
+            .report-container {
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                padding: 20px; /* Adjust padding for print */
+                max-width: 100%;
+                border: none;
+            }
+            textarea {
+                border: 1px solid #ddd;
+                background-color: #f9f9f9; /* Light background for text areas in print */
+                resize: none; /* Prevent resize in print */
+                overflow: hidden; /* Hide overflow in print */
+                min-height: auto; /* Adjust height for content */
+            }
+            .report-section {
+                page-break-inside: avoid;
+            }
+            .report-section h3 {
+                font-size: 1.2rem; /* Adjust for print */
+            }
+        }
+         @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .report-header h2 {
+                font-size: 1.5rem;
+            }
+            #scrollToTopBtn {
+                padding: 10px 12px;
+                font-size: 16px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>HIPAA Compliance Quick-Start Kit</h1>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="index.html">Home</a>
+            <a href="audit_tool.html">Free Audit Tool</a>
+            <a href="services.html">Services</a>
+            <a href="how_it_works.html">How It Works</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="report-container">
+                <div class="report-header">
+                    <h2>HIPAA Compliance Audit Report</h2>
+                    <p class="guidance-text">This template is for your use when providing a report to clients as part of your "HIPAA Compliance Fix Service". Fill in the details below based on the client's interactive audit results and your consultation. Then, use your browser's "Print to PDF" function to generate a professional PDF document for your client.</p>
+                </div>
+
+                <div class="print-button-container">
+                    <button class="print-button" onclick="window.print()">Print to PDF</button>
+                </div>
+
+                <div class="report-section client-info">
+                    <h3>Client Information</h3>
+                    <p><strong>Client Name/Organization:</strong> <textarea placeholder="Enter Client Name/Organization"></textarea></p>
+                    <p><strong>Date of Audit/Consultation:</strong> <textarea placeholder="Enter Date"></textarea></p>
+                    <p><strong>Report Prepared By:</strong> <textarea placeholder="Your Name/Company Name"></textarea></p>
+                </div>
+
+                <div class="report-section executive-summary">
+                    <h3>Executive Summary of Findings</h3>
+                    <textarea placeholder="Provide a brief overview of the key findings, overall compliance status, and most critical areas needing attention."></textarea>
+                </div>
+
+                <div class="report-section detailed-findings">
+                    <h3>Detailed Breakdown of Checklist Sections</h3>
+                    <p class="guidance-text">Refer to the client's completed interactive checklist. For each major section or critical item, summarize the status and provide observations. You might not list every single checklist item here, but focus on key areas and those identified as non-compliant or partially compliant.</p>
+                    
+                    <h4>Section 1: Security Rule - Administrative Safeguards</h4>
+                    <p><strong>Status:</strong> 
+                        <span class="status-options">
+                            <label><input type="radio" name="s1_status"> Compliant</label>
+                            <label><input type="radio" name="s1_status"> Partially Compliant</label>
+                            <label><input type="radio" name="s1_status"> Non-Compliant</label>
+                            <label><input type="radio" name="s1_status"> N/A</label>
+                        </span>
+                    </p>
+                    <p><strong>Observations & Notes:</strong></p>
+                    <textarea placeholder="Detail findings for Administrative Safeguards..."></textarea>
+
+                    <h4>Section 2: Security Rule - Physical Safeguards</h4>
+                    <p><strong>Status:</strong> 
+                        <span class="status-options">
+                            <label><input type="radio" name="s2_status"> Compliant</label>
+                            <label><input type="radio" name="s2_status"> Partially Compliant</label>
+                            <label><input type="radio" name="s2_status"> Non-Compliant</label>
+                            <label><input type="radio" name="s2_status"> N/A</label>
+                        </span>
+                    </p>
+                    <p><strong>Observations & Notes:</strong></p>
+                    <textarea placeholder="Detail findings for Physical Safeguards..."></textarea>
+
+                    <h4>Section 3: Security Rule - Technical Safeguards</h4>
+                    <p><strong>Status:</strong> 
+                        <span class="status-options">
+                            <label><input type="radio" name="s3_status"> Compliant</label>
+                            <label><input type="radio" name="s3_status"> Partially Compliant</label>
+                            <label><input type="radio" name="s3_status"> Non-Compliant</label>
+                            <label><input type="radio" name="s3_status"> N/A</label>
+                        </span>
+                    </p>
+                    <p><strong>Observations & Notes:</strong></p>
+                    <textarea placeholder="Detail findings for Technical Safeguards..."></textarea>
+
+                    <h4>Section 4: Privacy Rule - Key Areas</h4>
+                    <p><strong>Status:</strong> 
+                        <span class="status-options">
+                            <label><input type="radio" name="s4_status"> Compliant</label>
+                            <label><input type="radio" name="s4_status"> Partially Compliant</label>
+                            <label><input type="radio" name="s4_status"> Non-Compliant</label>
+                            <label><input type="radio" name="s4_status"> N/A</label>
+                        </span>
+                    </p>
+                    <p><strong>Observations & Notes:</strong></p>
+                    <textarea placeholder="Detail findings for Privacy Rule Key Areas..."></textarea>
+
+                    <h4>Section 5: Breach Notification Rule</h4>
+                    <p><strong>Status:</strong> 
+                        <span class="status-options">
+                            <label><input type="radio" name="s5_status"> Compliant</label>
+                            <label><input type="radio" name="s5_status"> Partially Compliant</label>
+                            <label><input type="radio" name="s5_status"> Non-Compliant</label>
+                            <label><input type="radio" name="s5_status"> N/A</label>
+                        </span>
+                    </p>
+                    <p><strong>Observations & Notes:</strong></p>
+                    <textarea placeholder="Detail findings for Breach Notification Rule..."></textarea>
+
+                    <h4>Section 6: AI-Specific Considerations</h4>
+                    <p><strong>Status:</strong> 
+                        <span class="status-options">
+                            <label><input type="radio" name="s6_status"> Compliant</label>
+                            <label><input type="radio" name="s6_status"> Partially Compliant</label>
+                            <label><input type="radio" name="s6_status"> Non-Compliant</label>
+                            <label><input type="radio" name="s6_status"> N/A</label>
+                        </span>
+                    </p>
+                    <p><strong>Observations & Notes:</strong></p>
+                    <textarea placeholder="Detail findings for AI-Specific Considerations..."></textarea>
+                </div>
+
+                <div class="report-section key-risks">
+                    <h3>Key Risk Areas Identified</h3>
+                    <textarea placeholder="Summarize the most significant risks identified during the audit (e.g., lack of BAA with AI vendor, insufficient access controls, no documented risk analysis)."></textarea>
+                </div>
+
+                <div class="report-section action-plan">
+                    <h3>Recommended Action Plan</h3>
+                    <p class="guidance-text">Outline prioritized, actionable steps the client should take to address the identified compliance gaps. Be specific.</p>
+                    <ol>
+                        <li><textarea placeholder="Action Item 1 (e.g., Conduct and document a formal Security Risk Analysis)"></textarea></li>
+                        <li><textarea placeholder="Action Item 2 (e.g., Implement unique user IDs for all systems accessing ePHI)"></textarea></li>
+                        <li><textarea placeholder="Action Item 3 (e.g., Develop and implement a Sanction Policy)"></textarea></li>
+                        <li><textarea placeholder="Add more action items as needed..."></textarea></li>
+                    </ol>
+                </div>
+
+                <div class="disclaimer-footer">
+                    <p><strong>Disclaimer:</strong> This report is based on information provided by the client and observations made during the audit/consultation process as of the date specified. It is intended for informational purposes to assist the client in improving their HIPAA compliance posture. Full compliance with HIPAA is an ongoing process and requires continuous effort and vigilance. This report does not constitute legal advice, nor does it guarantee immunity from regulatory actions. The client is encouraged to consult with legal counsel for advice on specific legal and regulatory obligations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> YourCompanyName/YourName. All Rights Reserved.</p>
+            <p><a href="privacy_policy.html" style="color: #fff; text-decoration: underline;">Privacy Policy (Placeholder)</a></p>
+        </div>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">&#8679;</button>
+
+    <script>
+        // Get the button
+        let scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+        // When the user scrolls down 200px from the top of the document, show the button
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                if(scrollToTopBtn) scrollToTopBtn.style.display = "block";
+            } else {
+                if(scrollToTopBtn) scrollToTopBtn.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function scrollToTop() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+        
+        // Update year in footer
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Simple script to make textareas auto-expand slightly if needed, only for screen view
+        // For print, CSS will handle it.
+        if (window.matchMedia("screen").matches) {
+            document.querySelectorAll('textarea').forEach(textarea => {
+                textarea.addEventListener('input', function () {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                });
+                // Trigger initial resize for pre-filled textareas
+                textarea.style.height = 'auto';
+                textarea.style.height = (textarea.scrollHeight) + 'px';
+            });
+        }
+    </script>
+</body>
+</html>
+

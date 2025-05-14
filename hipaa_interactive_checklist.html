@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive HIPAA Compliance Audit Checklist</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .disclaimer {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        .section {
+            margin-bottom: 30px;
+            border-left: 3px solid #0056b3;
+            padding-left: 15px;
+        }
+        .section h2 {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section h2 .toggle-icon::before {
+            content: '\25BC'; /* Down arrow */
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .section.collapsed h2 .toggle-icon::before {
+            content: '\25B6'; /* Right arrow */
+        }
+        .subsection {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 12px;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+        }
+        li input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .reference {
+            font-size: 0.8em;
+            color: #555;
+            display: block;
+            margin-top: 4px;
+        }
+        .progress-container {
+            margin-bottom: 20px;
+            background-color: #e9ecef;
+            border-radius: .25rem;
+            padding: 5px;
+        }
+        .progress-bar {
+            height: 24px;
+            background-color: #28a745;
+            width: 0%;
+            text-align: center;
+            line-height: 24px;
+            color: white;
+            border-radius: .25rem;
+            transition: width 0.4s ease;
+        }
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .controls button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+        .section-content {
+            max-height: 10000px; /* Large enough for content */
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .section.collapsed .section-content {
+            max-height: 0;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background-color: #fff;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                border-radius: 0;
+            }
+            .controls, .progress-container, .toggle-icon {
+                display: none !important;
+            }
+            .section {
+                border-left: none;
+                padding-left: 0;
+            }
+            .section.collapsed .section-content, .section-content {
+                max-height: none !important; /* Ensure all content is visible for printing */
+                overflow: visible !important;
+            }
+            li {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive HIPAA Compliance Audit Checklist</h1>
+
+        <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> This checklist is intended for informational and self-assessment purposes only. It is not a substitute for legal advice or a comprehensive HIPAA audit conducted by qualified professionals. Organizations should consult with legal counsel and compliance experts to ensure full adherence to HIPAA regulations.</p>
+        </div>
+
+        <div class="controls">
+            <button id="resetButton">Reset Checklist</button>
+            <button id="printButton">Print Checklist</button>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+
+        <!-- Sections will be injected here by JavaScript -->
+        <div id="checklistContainer">
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checklistData = `
+## Section 1: Security Rule - Administrative Safeguards
+
+### 1.1 Security Management Process
+- **1.1.1 Risk Analysis:** Has a thorough and accurate risk analysis of potential risks and vulnerabilities to the confidentiality, integrity, and availability of electronic Protected Health Information (ePHI) been conducted and documented? (45 CFR § 164.308(a)(1)(ii)(A))
+- **1.1.2 Risk Management:** Are security measures implemented sufficient to reduce risks and vulnerabilities to a reasonable and appropriate level? (45 CFR § 164.308(a)(1)(ii)(B))
+- **1.1.3 Sanction Policy:** Is there a sanction policy in place for workforce members who fail to comply with security policies and procedures? (45 CFR § 164.308(a)(1)(ii)(C))
+- **1.1.4 Information System Activity Review:** Are procedures in place to regularly review records of information system activity, such as audit logs, access reports, and security incident tracking reports? (45 CFR § 164.308(a)(1)(ii)(D))
+
+### 1.2 Assigned Security Responsibility
+- **1.2.1 Identify Security Official:** Has a security official been identified who is responsible for the development and implementation of policies and procedures required by the Security Rule? (45 CFR § 164.308(a)(2))
+
+### 1.3 Workforce Security
+- **1.3.1 Authorization and/or Supervision:** Are policies and procedures implemented to ensure that all members of the workforce have appropriate access to ePHI and to prevent those workforce members who do not have access from obtaining access? (45 CFR § 164.308(a)(3)(ii)(A))
+- **1.3.2 Workforce Clearance Procedure:** Are procedures in place to determine that the access of a workforce member to ePHI is appropriate? (45 CFR § 164.308(a)(3)(ii)(B))
+- **1.3.3 Termination Procedures:** Are procedures for terminating access to ePHI when a workforce member leaves, or their responsibilities change, implemented and documented? (45 CFR § 164.308(a)(3)(ii)(C))
+
+### 1.4 Information Access Management
+- **1.4.1 Isolating Healthcare Clearinghouse Functions (if applicable):** If a healthcare clearinghouse is part of a larger organization, are policies and procedures in place to protect the ePHI of the clearinghouse from the larger organization? (45 CFR § 164.308(a)(4)(ii)(A))
+- **1.4.2 Access Authorization:** Are policies and procedures for granting access to ePHI (e.g., through access to a workstation, transaction, program, process, or other mechanism) implemented? (45 CFR § 164.308(a)(4)(ii)(B))
+- **1.4.3 Access Establishment and Modification:** Are policies and procedures that, based upon the entity’s access authorization policies, establish, document, review, and modify a user’s right of access to a workstation, terminal, or transaction implemented? (45 CFR § 164.308(a)(4)(ii)(C))
+
+### 1.5 Security Awareness and Training
+- **1.5.1 Security Reminders:** Are periodic security updates or reminders provided to the workforce? (45 CFR § 164.308(a)(5)(ii)(A))
+- **1.5.2 Protection from Malicious Software:** Are procedures for guarding against, detecting, and reporting malicious software implemented? (45 CFR § 164.308(a)(5)(ii)(B))
+- **1.5.3 Log-in Monitoring:** Are procedures for monitoring log-in attempts and reporting discrepancies implemented? (45 CFR § 164.308(a)(5)(ii)(C))
+- **1.5.4 Password Management:** Are procedures for creating, changing, and safeguarding passwords implemented? (45 CFR § 164.308(a)(5)(ii)(D))
+
+### 1.6 Security Incident Procedures
+- **1.6.1 Response and Reporting:** Are policies and procedures to address security incidents, including identifying and responding to suspected or known security incidents, mitigating harmful effects, and documenting incidents and their outcomes, implemented? (45 CFR § 164.308(a)(6)(i))
+
+### 1.7 Contingency Plan
+- **1.7.1 Data Backup Plan:** Are procedures to create and maintain retrievable exact copies of ePHI established and implemented? (45 CFR § 164.308(a)(7)(ii)(A))
+- **1.7.2 Disaster Recovery Plan:** Are procedures to restore any loss of data established and implemented? (45 CFR § 164.308(a)(7)(ii)(B))
+- **1.7.3 Emergency Mode Operation Plan:** Are procedures to enable continuation of critical business processes for protection of the security of ePHI while operating in emergency mode established and implemented? (45 CFR § 164.308(a)(7)(ii)(C))
+- **1.7.4 Testing and Revision Procedures:** Are procedures for periodic testing and revision of contingency plans implemented? (45 CFR § 164.308(a)(7)(ii)(D))
+- **1.7.5 Applications and Data Criticality Analysis:** Is an assessment of the relative criticality of specific applications and data in support of other contingency plan components conducted? (45 CFR § 164.308(a)(7)(ii)(E))
+
+### 1.8 Evaluation
+- **1.8.1 Periodic Evaluation:** Are periodic technical and nontechnical evaluations, based upon the standards implemented under this rule and in response to environmental or operational changes affecting the security of ePHI, performed? (45 CFR § 164.308(a)(8))
+
+### 1.9 Business Associate Contracts and Other Arrangements
+- **1.9.1 Written Contract or Other Arrangement:** Is there a written contract or other arrangement with business associates that access, use, or disclose ePHI, which meets the requirements of 45 CFR § 164.314(a)? (45 CFR § 164.308(b)(1))
+
+## Section 2: Security Rule - Physical Safeguards
+
+### 2.1 Facility Access Controls
+- **2.1.1 Contingency Operations:** Are procedures that allow facility access in support of restoration of lost data under the disaster recovery plan and emergency mode operations plan in the event of an emergency established and implemented? (45 CFR § 164.310(a)(2)(i))
+- **2.1.2 Facility Security Plan:** Are policies and procedures to safeguard the facility and the equipment therein from unauthorized physical access, tampering, and theft implemented? (45 CFR § 164.310(a)(2)(ii))
+- **2.1.3 Access Control and Validation Procedures:** Are procedures to control and validate a person’s access to facilities based on their role or function, including visitor control, and control of access to software programs for testing and revision, implemented? (45 CFR § 164.310(a)(2)(iii))
+- **2.1.4 Maintenance Records:** Are policies and procedures to document repairs and modifications to the physical components of a facility which are related to security (e.g. hardware, walls, doors, and locks) implemented? (45 CFR § 164.310(a)(2)(iv))
+
+### 2.2 Workstation Use
+- **2.2.1 Policies and Procedures:** Are policies and procedures that specify the proper functions to be performed, the manner in which those functions are to be performed, and the physical attributes of the surroundings of a specific workstation or class of workstation that can access ePHI implemented? (45 CFR § 164.310(b))
+
+### 2.3 Workstation Security
+- **2.3.1 Physical Safeguards:** Are physical safeguards for all workstations that access ePHI implemented to restrict access to authorized users? (45 CFR § 164.310(c))
+
+### 2.4 Device and Media Controls
+- **2.4.1 Disposal:** Are policies and procedures to address the final disposition of ePHI, and/or the hardware or electronic media on which it is stored, implemented? (45 CFR § 164.310(d)(2)(i))
+- **2.4.2 Media Re-use:** Are procedures for removal of ePHI from electronic media before the media are made available for re-use implemented? (45 CFR § 164.310(d)(2)(ii))
+- **2.4.3 Accountability:** Are records of the movements of hardware and electronic media and any person responsible therefore maintained? (45 CFR § 164.310(d)(2)(iii))
+- **2.4.4 Data Backup and Storage:** Is a retrievable, exact copy of ePHI created, when needed, before movement of equipment? (45 CFR § 164.310(d)(2)(iv))
+
+## Section 3: Security Rule - Technical Safeguards
+
+### 3.1 Access Control
+- **3.1.1 Unique User Identification:** Is a unique name and/or number for identifying and tracking user identity assigned and used? (45 CFR § 164.312(a)(2)(i))
+- **3.1.2 Emergency Access Procedure:** Are procedures for obtaining necessary ePHI during an emergency established and implemented? (45 CFR § 164.312(a)(2)(ii))
+- **3.1.3 Automatic Logoff:** Are electronic procedures that terminate an electronic session after a predetermined time of inactivity implemented? (45 CFR § 164.312(a)(2)(iii))
+- **3.1.4 Encryption and Decryption:** Are mechanisms to encrypt and decrypt ePHI implemented where deemed appropriate? (45 CFR § 164.312(a)(2)(iv))
+
+### 3.2 Audit Controls
+- **3.2.1 Audit Trails:** Are hardware, software, and/or procedural mechanisms that record and examine activity in information systems that contain or use ePHI implemented? (45 CFR § 164.312(b))
+
+### 3.3 Integrity
+- **3.3.1 Mechanism to Authenticate ePHI:** Are policies and procedures to protect ePHI from improper alteration or destruction implemented? (45 CFR § 164.312(c)(1))
+- **3.3.2 Data Integrity Corroboration:** Are electronic mechanisms to corroborate that ePHI has not been improperly altered or destroyed implemented? (45 CFR § 164.312(c)(2))
+
+### 3.4 Person or Entity Authentication
+- **3.4.1 Authentication Procedures:** Are procedures to verify that a person or entity seeking access to ePHI is the one claimed implemented? (45 CFR § 164.312(d))
+
+### 3.5 Transmission Security
+- **3.5.1 Integrity Controls:** Are security measures to ensure that electronically transmitted ePHI is not improperly modified without detection until disposed of implemented? (45 CFR § 164.312(e)(2)(i))
+- **3.5.2 Encryption:** Are mechanisms to encrypt ePHI whenever deemed appropriate during transmission implemented? (45 CFR § 164.312(e)(2)(ii))
+
+## Section 4: Privacy Rule - Key Areas
+
+### 4.1 Notice of Privacy Practices (NPP)
+- **4.1.1 Provision of NPP:** Is a Notice of Privacy Practices provided to individuals as required, and are good faith efforts made to obtain written acknowledgment of receipt? (45 CFR § 164.520)
+- **4.1.2 NPP Content:** Does the NPP contain all required elements, including how PHI may be used and disclosed, individual rights, and the covered entity’s duties? (45 CFR § 164.520(b))
+
+### 4.2 Rights Regarding PHI
+- **4.2.1 Right to Request Restrictions:** Are policies and procedures in place to permit individuals to request restrictions on the use and disclosure of their PHI? (45 CFR § 164.522(a))
+- **4.2.2 Right to Confidential Communications:** Are policies and procedures to permit individuals to request to receive communications of PHI by alternative means or at alternative locations implemented? (45 CFR § 164.522(b))
+- **4.2.3 Right of Access:** Are policies and procedures to permit individuals to inspect and obtain a copy of their PHI in a designated record set implemented? (45 CFR § 164.524)
+- **4.2.4 Right to Amend:** Are policies and procedures to permit individuals to request amendment of their PHI in a designated record set implemented? (45 CFR § 164.526)
+- **4.2.5 Right to an Accounting of Disclosures:** Are policies and procedures to provide individuals with an accounting of disclosures of their PHI implemented? (45 CFR § 164.528)
+
+### 4.3 Uses and Disclosures of PHI
+- **4.3.1 Minimum Necessary:** Are policies and procedures to limit the use and disclosure of PHI to the minimum necessary to accomplish the intended purpose implemented? (45 CFR § 164.502(b), 164.514(d))
+- **4.3.2 Authorizations:** Are valid authorizations obtained for uses and disclosures of PHI not otherwise permitted or required by the Privacy Rule? (45 CFR § 164.508)
+- **4.3.3 De-identification:** If PHI is de-identified, are appropriate methods (Expert Determination or Safe Harbor) used and documented? (45 CFR § 164.514(a)-(c))
+
+### 4.4 Administrative Requirements
+- **4.4.1 Privacy Official:** Has a privacy official been designated to be responsible for the development and implementation of privacy policies and procedures? (45 CFR § 164.530(a))
+- **4.4.2 Training:** Is training provided to all workforce members on privacy policies and procedures as necessary and appropriate for them to carry out their functions? (45 CFR § 164.530(b))
+- **4.4.3 Safeguards:** Are appropriate administrative, technical, and physical safeguards in place to protect the privacy of PHI? (45 CFR § 164.530(c))
+- **4.4.4 Complaints:** Is a process for individuals to make complaints concerning privacy policies and procedures or compliance with such established? (45 CFR § 164.530(d))
+- **4.4.5 Sanctions:** Are sanction policies for workforce members who fail to comply with privacy policies and procedures in place? (45 CFR § 164.530(e))
+- **4.4.6 Mitigation:** Are reasonable steps taken to mitigate any harmful effect that is known to the covered entity of a use or disclosure of PHI in violation of its policies and procedures or the requirements of the Privacy Rule? (45 CFR § 164.530(f))
+- **4.4.7 Business Associates:** Are satisfactory assurances obtained from business associates that they will appropriately safeguard PHI, typically through a Business Associate Agreement (BAA)? (45 CFR § 164.502(e), 164.504(e))
+
+## Section 5: Breach Notification Rule
+
+### 5.1 Discovery and Assessment of a Breach
+- **5.1.1 Breach Definition:** Are workforce members trained on the definition of a breach of unsecured PHI? (45 CFR § 164.402)
+- **5.1.2 Risk Assessment:** Is a risk assessment conducted to determine the probability that PHI has been compromised following an impermissible use or disclosure, unless an exception applies? (45 CFR § 164.402)
+- **5.1.3 Documentation:** Is the risk assessment (or reason an exception applies) documented?
+
+### 5.2 Notification Requirements
+- **5.2.1 Notification to Individuals:** Are individuals notified without unreasonable delay and in no case later than 60 calendar days after discovery of a breach? (45 CFR § 164.404)
+- **5.2.2 Notification to Media (if applicable):** If a breach affects more than 500 residents of a State or jurisdiction, is notice provided to prominent media outlets serving the State or jurisdiction? (45 CFR § 164.406)
+- **5.2.3 Notification to the Secretary of HHS:** Is the Secretary of HHS notified of breaches as required (contemporaneously for breaches affecting 500+ individuals; annually for smaller breaches)? (45 CFR § 164.408)
+- **5.2.4 Notification by Business Associate:** Do Business Associate Agreements require BAs to notify the covered entity of breaches at or by the BA? (45 CFR § 164.410)
+
+### 5.3 Documentation
+- **5.3.1 Breach Documentation:** Are all breaches, risk assessments, and notifications documented and maintained? (45 CFR § 164.414, 164.530(j))
+
+## Section 6: AI-Specific Considerations (Cross-Cutting)
+
+These questions should be considered in conjunction with the relevant sections above when AI systems are involved in handling ePHI/PHI.
+
+- **6.1 AI Data Governance:** Are there specific policies and procedures for the governance of PHI used in AI systems (e.g., data sourcing, labeling, quality control, lifecycle management for AI models)?
+- **6.2 AI Transparency & Explainability:** If AI is used for clinical decision support or other impactful uses, are there mechanisms to provide explanations for AI-driven decisions involving PHI, as appropriate and feasible?
+- **6.3 AI Bias Detection & Mitigation:** Are steps taken to assess and mitigate potential biases in AI algorithms that could affect patient care or privacy when using PHI?
+- **6.4 AI Model Security:** Are AI models, training datasets, and related infrastructure secured against unauthorized access, tampering, or theft, consistent with Security Rule requirements?
+- **6.5 AI Vendor Due Diligence:** When using third-party AI tools or platforms that handle PHI:
+    - Is thorough due diligence conducted on the vendor’s security and privacy practices?
+    - Is a robust Business Associate Agreement (BAA) in place that specifically addresses AI-related risks and responsibilities?
+    - Are the vendor’s compliance claims and certifications verified?
+- **6.6 AI Training Data & Minimum Necessary:** When using PHI for AI model training, is the principle of minimum necessary applied? Are de-identification or anonymization techniques used where appropriate and feasible to reduce risk?
+- **6.7 AI System Monitoring & Auditing:** Are AI systems that process PHI regularly monitored and audited for security events, access patterns, and compliance with policies?
+- **6.8 AI Incident Response:** Do security incident response plans specifically address potential incidents involving AI systems (e.g., adversarial attacks, model poisoning, data leakage through AI outputs)?
+`;
+
+            const checklistContainer = document.getElementById('checklistContainer');
+            const progressBar = document.getElementById('progressBar');
+            const resetButton = document.getElementById('resetButton');
+            const printButton = document.getElementById('printButton');
+            let totalCheckboxes = 0;
+            let checkedCheckboxes = 0;
+
+            function parseMarkdownToHTML(md) {
+                const lines = md.trim().split('\n');
+                let html = '';
+                let currentSection = null;
+                let currentSubSection = null;
+                let currentList = null;
+                let sectionIndex = 0;
+                let subSectionIndex = 0;
+                let itemIndex = 0;
+
+                lines.forEach(line => {
+                    if (line.startsWith('## ')) { // Main Section
+                        if (currentList) html += '</ul>';
+                        if (currentSubSection) html += '</div>'; // Close previous subsection
+                        if (currentSection) html += '</div></div>'; // Close previous section content and section div
+                        currentList = null;
+                        currentSubSection = null;
+                        sectionIndex++;
+                        subSectionIndex = 0;
+                        const title = line.substring(3).trim();
+                        html += `<div class="section" id="section-${sectionIndex}">
+                                    <h2>${title} <span class="toggle-icon"></span></h2>
+                                    <div class="section-content">`;
+                        currentSection = title;
+                    } else if (line.startsWith('### ')) { // Sub-section
+                        if (currentList) html += '</ul>';
+                        if (currentSubSection) html += '</div>'; // Close previous subsection
+                        currentList = null;
+                        subSectionIndex++;
+                        itemIndex = 0;
+                        const title = line.substring(4).trim();
+                        html += `<div class="subsection" id="subsection-${sectionIndex}-${subSectionIndex}">
+                                    <h3>${title}</h3>`;
+                        currentSubSection = title;
+                    } else if (line.startsWith('- ')) { // Checklist item
+                        if (!currentList) {
+                            html += '<ul>';
+                            currentList = true;
+                        }
+                        itemIndex++;
+                        totalCheckboxes++;
+                        const uniqueId = `chk-${sectionIndex}-${subSectionIndex}-${itemIndex}`;
+                        const itemText = line.substring(2).trim();
+                        const parts = itemText.split('(');
+                        const mainText = parts[0].trim();
+                        const reference = parts.length > 1 ? '(' + parts.slice(1).join('(') : '';
+                        
+                        html += `<li>
+                                    <label for="${uniqueId}">
+                                        <input type="checkbox" id="${uniqueId}" name="${uniqueId}">
+                                        ${mainText}
+                                        ${reference ? `<span class="reference">${reference}</span>` : ''}
+                                    </label>
+                                 </li>`;
+                    }
+                });
+
+                if (currentList) html += '</ul>';
+                if (currentSubSection) html += '</div>';
+                if (currentSection) html += '</div></div>';
+                return html;
+            }
+
+            checklistContainer.innerHTML = parseMarkdownToHTML(checklistData);
+
+            const checkboxes = checklistContainer.querySelectorAll('input[type="checkbox"]');
+            
+            function updateProgress() {
+                checkedCheckboxes = 0;
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        checkedCheckboxes++;
+                    }
+                });
+                const progress = totalCheckboxes > 0 ? (checkedCheckboxes / totalCheckboxes) * 100 : 0;
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = Math.round(progress) + '%';
+            }
+
+            function saveState() {
+                const checkboxStates = {};
+                checkboxes.forEach(checkbox => {
+                    checkboxStates[checkbox.id] = checkbox.checked;
+                });
+                localStorage.setItem('hipaaChecklistState', JSON.stringify(checkboxStates));
+            }
+
+            function loadState() {
+                const savedState = localStorage.getItem('hipaaChecklistState');
+                if (savedState) {
+                    const checkboxStates = JSON.parse(savedState);
+                    checkboxes.forEach(checkbox => {
+                        if (checkboxStates[checkbox.id] !== undefined) {
+                            checkbox.checked = checkboxStates[checkbox.id];
+                        }
+                    });
+                }
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateProgress();
+                    saveState();
+                });
+            });
+
+            resetButton.addEventListener('click', () => {
+                if (confirm('Are you sure you want to reset the checklist? All progress will be lost.')) {
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                    updateProgress();
+                    saveState(); // Save the reset state
+                }
+            });
+
+            printButton.addEventListener('click', () => {
+                window.print();
+            });
+
+            // Section collapsing functionality
+            document.querySelectorAll('.section h2').forEach(header => {
+                header.addEventListener('click', () => {
+                    const sectionDiv = header.closest('.section');
+                    sectionDiv.classList.toggle('collapsed');
+                });
+            });
+
+            loadState();
+            updateProgress(); // Initial progress update
+        });
+    </script>
+</body>
+</html>
+

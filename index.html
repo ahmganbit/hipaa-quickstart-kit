@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIPAA Compliance Quick-Start Kit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth; /* Enables smooth scrolling for anchor links */
+        }
+        body {
+            font-family: 'Lato', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+        header {
+            background: #0056b3;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            border-bottom: #004085 3px solid;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        nav {
+            background: #343a40;
+            color: #fff;
+            padding: 0.5rem 0;
+            text-align: center;
+            position: sticky; /* Make nav sticky */
+            top: 0;
+            z-index: 1000;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: inline-block;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        nav a:hover {
+            background: #0056b3;
+            color: #e0e0e0;
+            border-radius: 5px;
+            text-decoration: underline;
+        }
+        .hero {
+            background: #e9ecef;
+            color: #333;
+            padding: 4rem 0;
+            text-align: center;
+            margin-top: 0; /* Adjust if nav is sticky */
+        }
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #0056b3;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #28a745;
+            color: #fff;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            margin: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .cta-button:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .cta-button.secondary {
+            background: #007bff;
+        }
+        .cta-button.secondary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .section {
+            padding: 3rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .section:last-child {
+            border-bottom: none;
+        }
+        .section h3 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2.5rem;
+            color: #0056b3;
+            font-weight: 700;
+        }
+        .section-columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .column {
+            flex: 1;
+            min-width: 280px;
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .column:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        .column h4 {
+            font-size: 1.4rem;
+            color: #007bff;
+            margin-top: 0;
+            font-weight: 700;
+        }
+        .column ul {
+            list-style: none;
+            padding: 0;
+        }
+        .column ul li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dotted #eee;
+        }
+        .column ul li:before {
+            content: "\2713";
+            color: #28a745;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .column ul li:last-child {
+            border-bottom: none;
+        }
+        .how-it-works ol {
+            list-style-type: none;
+            padding-left: 0;
+            counter-reset: step-counter;
+        }
+        .how-it-works ol li {
+            background: #f9f9f9;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            position: relative;
+            padding-left: 50px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .how-it-works ol li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .how-it-works ol li::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #007bff;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        footer {
+            background: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        #scrollToTopBtn {
+            display: none; 
+            position: fixed; 
+            bottom: 20px; 
+            right: 30px; 
+            z-index: 99; 
+            border: none; 
+            outline: none; 
+            background-color: #0056b3; 
+            color: white; 
+            cursor: pointer; 
+            padding: 12px 15px;
+            border-radius: 50%; 
+            font-size: 18px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+        }
+        #scrollToTopBtn:hover {
+            background-color: #004085;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section h3 {
+                font-size: 1.8rem;
+            }
+            .section-columns {
+                flex-direction: column;
+            }
+            #scrollToTopBtn {
+                padding: 10px 12px;
+                font-size: 16px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>HIPAA Compliance Quick-Start Kit</h1>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="index.html">Home</a>
+            <a href="audit_tool.html">Free Audit Tool</a>
+            <a href="services.html">Services</a>
+            <a href="how_it_works.html">How It Works</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Is Your AI HIPAA Compliant? Avoid $50k Fines!</h2>
+            <p>Get a quick, actionable HIPAA compliance check with our free interactive tool and expert guidance to protect patient data and your business.</p>
+            <a href="audit_tool.html" class="cta-button">Start Your Free HIPAA Audit Now</a>
+            <a href="services.html#payment" class="cta-button secondary">Learn About Our Compliance Fix Services</a>
+        </div>
+    </section>
+
+    <section id="problem-solution" class="section problem-solution">
+        <div class="container">
+            <h3>The Challenge & Your Solution</h3>
+            <div class="section-columns">
+                <div class="column">
+                    <h4>The Problem: Navigating HIPAA is Complex</h4>
+                    <p>Understanding and implementing HIPAA regulations can be overwhelming, especially for AI and healthcare startups. The risk of non-compliance is high, leading to potential fines, data breaches, and loss of trust.</p>
+                </div>
+                <div class="column">
+                    <h4>Our Solution: Simplified Compliance</h4>
+                    <p>Our Quick-Start Kit provides you with an easy-to-use interactive audit tool and straightforward guidance. We help you identify compliance gaps quickly and offer expert support to address them effectively, all without upfront costs for the initial audit.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="section how-it-works-overview" style="background-color: #f8f9fa;">
+        <div class="container">
+            <h3>How It Works (In 3 Simple Steps)</h3>
+            <div class="how-it-works">
+                <ol>
+                    <li><strong>Take the Free Interactive Audit:</strong> Use our comprehensive checklist to assess your current HIPAA compliance status.</li>
+                    <li><strong>Receive Your Instant Overview:</strong> Identify potential gaps and areas for improvement directly from the tool.</li>
+                    <li><strong>Get Expert Help to Fix Gaps:</strong> Opt for our affordable "Compliance Fix" service for personalized guidance and solutions.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <section id="benefits" class="section benefits">
+        <div class="container">
+            <h3>Why Choose Our Quick-Start Kit?</h3>
+            <div class="section-columns">
+                <div class="column">
+                    <h4>Avoid Costly Fines</h4>
+                    <p>Proactively address compliance issues and significantly reduce your risk of facing hefty HIPAA penalties.</p>
+                </div>
+                <div class="column">
+                    <h4>Protect Patient Data</h4>
+                    <p>Implement robust safeguards to ensure the confidentiality, integrity, and availability of sensitive patient information.</p>
+                </div>
+                <div class="column">
+                    <h4>Build Trust</h4>
+                    <p>Demonstrate your commitment to data security and compliance, enhancing trust with your clients, patients, and partners.</p>
+                </div>
+                 <div class="column">
+                    <h4>Focus on Your Core Business</h4>
+                    <p>Let us simplify compliance so you can concentrate on innovation and growth in your healthcare venture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="featured-tool" class="section featured-tool" style="background-color: #e9ecef;">
+        <div class="container" style="text-align: center;">
+            <h3>Our Free Interactive HIPAA Audit Tool</h3>
+            <p style="max-width: 700px; margin-left: auto; margin-right: auto; margin-bottom: 2rem;">Our comprehensive checklist is designed to be user-friendly, helping you quickly pinpoint areas of your AI or healthcare project that may require attention to meet HIPAA standards. It's the perfect first step towards robust compliance.</p>
+            <a href="audit_tool.html" class="cta-button">Access the Free Audit Tool</a>
+        </div>
+    </section>
+
+    <section id="final-cta" class="section final-cta">
+        <div class="container" style="text-align: center;">
+            <h3>Ready to Secure Your Compliance?</h3>
+            <p style="max-width: 700px; margin-left: auto; margin-right: auto; margin-bottom: 2rem;">Don't leave your HIPAA compliance to chance. Take control with our free audit tool and expert services.</p>
+            <a href="audit_tool.html" class="cta-button">Start Your Free Audit Now</a>
+            <a href="services.html#payment" class="cta-button secondary">Explore Compliance Fix Services</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> YourCompanyName/YourName. All Rights Reserved.</p>
+            <p><a href="privacy_policy.html" style="color: #fff; text-decoration: underline;">Privacy Policy (Placeholder)</a></p>
+        </div>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollToTopBtn" title="Go to top">&#8679;</button>
+
+    <script>
+        // Get the button
+        let scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function scrollToTop() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // Smooth scroll for anchor links (basic implementation)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                // Check if the link is to a different page or just an anchor on the current page
+                if (this.pathname === window.location.pathname) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Update year in footer
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
+
